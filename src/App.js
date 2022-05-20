@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useEffect, useState } from "react";
+import { Cards, Charts, Picker, Loading } from "./components";
+import styles from "./App.module.css";
+import { getGlobal } from "./api";
 function App() {
+  const [data, setData] = useState({});
+  const [country, setcountry] = useState("");
+  const [loading, setLoding] = useState(false);
+  useEffect(() => {
+    getGlobal(country).then((res) => {
+      setData(res);
+      setLoding(false);
+    });
+  }, [country]);
+  const handleCountrychange = (countryArg) => {
+    setcountry(countryArg);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={styles.container}>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          {" "}
+          <Cards data={data} />
+          <Picker change={handleCountrychange} />
+          <Charts data={data} country={country} />{" "}
+        </>
+      )}
     </div>
   );
 }
