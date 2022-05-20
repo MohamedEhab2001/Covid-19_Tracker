@@ -5,7 +5,7 @@ import { getGlobal } from "./api";
 function App() {
   const [data, setData] = useState({});
   const [country, setcountry] = useState("");
-  const [loading, setLoding] = useState(false);
+  const [loading, setLoding] = useState(true);
   useEffect(() => {
     getGlobal(country).then((res) => {
       setData(res);
